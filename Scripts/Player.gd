@@ -1,12 +1,17 @@
 extends KinematicBody
 
-export var SPEED = 2.5
-
-const GRAVITY = -1
 
 # movement variables
-var motion = Vector3()
+var vel = Vector3()
+var dir = Vector3()
 var facing_direction = 0
+
+# movement constants
+const GRAVITY = -45
+const MAX_SPEED = 20
+const ACCEL = 5
+const DECCEL = 10
+const JUMP_SPEED = 15
 
 # animation constants
 const BLEND_MINIMUM = 0.125
@@ -17,36 +22,78 @@ const IDLE_BLEND_AMOUNT = 0.075
 var move_state = 0
 
 func _process(delta):
-	move()
-	#apply_gravity()
+	move(delta)
 	face_forward()
 	animate()
 
 
-func apply_gravity():
-	if not is_on_floor():
-		motion.y = GRAVITY
-	else:
-		motion.y = 0
+func move(delta):
+	var movement_dir = get_2d_movement()
+	var camera_xfor = $Camera.get_global_transform()
+	
+	dir = Vector3(0,0,0)
+	dir -= camera_xfor.basis.z.normalized() * movement_dir.y
+	dir -= camera_xfor.basis.x.normalized() * movement_dir.x
+	
+	dir = move_vertically(dir, delta)
+	vel = h_accel(dir, delta)
+	
+	vel = move_and_slide(vel, Vector3.UP)
 
-func move():
+
+func get_2d_movement():
+	var movement_vector = Vector2()
 	if Input.is_action_pressed("forward") and not Input.is_action_pressed("backward"):
-		motion.z = 1
+		movement_vector.y = 1
 		facing_direction = 0
 	elif Input.is_action_pressed("backward") and not Input.is_action_pressed("forward"):
-		motion.z = -1
+		movement_vector.y = -1
 		facing_direction = PI
 	else:
-		motion.z = 0
+		movement_vector.y = 0
 	if Input.is_action_pressed("left") and not Input.is_action_pressed("right"):
-		motion.x = 1
+		movement_vector.x = 1
 		facing_direction = PI * 0.5
 	elif Input.is_action_pressed("right") and not Input.is_action_pressed("left"):
-		motion.x = -1
+		movement_vector.x = -1
 		facing_direction = PI * 1.5
 	else:
-		motion.x = 0
-	move_and_slide(motion * SPEED, Vector3.UP)
+		movement_vector.x = 0
+	return movement_vector.normalized()
+
+
+func move_vertically(direction, delta):
+	vel.y += GRAVITY * delta
+	
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		vel.y = JUMP_SPEED
+	elif is_on_floor():
+		vel.y = 0
+	
+	direction.y = 0
+	direction.normalized()
+	return direction
+
+
+func h_accel(direction, delta):
+	var vel_2d = vel
+	vel_2d.y = 0
+	
+	var target = direction
+	target *= MAX_SPEED
+	
+	var accel
+	if direction.dot(vel_2d) > 0:
+		accel = ACCEL
+	else:
+		accel = DECCEL
+	
+	vel_2d = vel_2d.linear_interpolate(target, accel * delta)
+	
+	vel.x = vel_2d.x
+	vel.z = vel_2d.z
+	
+	return vel
 
 
 func face_forward():
@@ -55,7 +102,7 @@ func face_forward():
 
 func animate():
 	var animationTree = $Armature/AnimationTree
-	if motion.length() > BLEND_MINIMUM:
+	if vel.length() > BLEND_MINIMUM:
 		move_state += RUN_BLEND_AMOUNT
 	else:
 		move_state -= IDLE_BLEND_AMOUNT
