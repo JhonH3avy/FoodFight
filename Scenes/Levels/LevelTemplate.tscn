@@ -1,17 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Models/Architecture/floorFull.mesh" type="ArrayMesh" id=1]
-[ext_resource path="res://Models/Furniture/desk.mesh" type="ArrayMesh" id=3]
-[ext_resource path="res://Models/Furniture/Chair.mesh" type="ArrayMesh" id=4]
 [ext_resource path="res://Scenes/Characters/Players/Player.tscn" type="PackedScene" id=5]
 
 [sub_resource type="BoxShape" id=1]
-
-[sub_resource type="BoxShape" id=2]
-extents = Vector3( 1.82314, 0.908086, 0.931366 )
-
-[sub_resource type="BoxShape" id=3]
-extents = Vector3( 0.768589, 1.21977, 1 )
 
 [node name="LevelTemplate" type="Spatial"]
 
@@ -24,35 +16,6 @@ shape = SubResource( 1 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Floor"]
 mesh = ExtResource( 1 )
-material/0 = null
-
-[node name="Furniture" type="Spatial" parent="."]
-
-[node name="Desk" type="RigidBody" parent="Furniture"]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 7, 4.13884, 13 )
-mass = 27.551
-
-[node name="CollisionShape" type="CollisionShape" parent="Furniture/Desk"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.139297, 0.0111771, 0.17892 )
-shape = SubResource( 2 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Furniture/Desk"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9393, -0.93199, -0.71108 )
-mesh = ExtResource( 3 )
-material/0 = null
-material/1 = null
-material/2 = null
-
-[node name="Chair" type="RigidBody" parent="Furniture"]
-transform = Transform( -1, 5.61942e-08, -6.69697e-08, 5.61943e-08, 1, -4.17233e-07, 6.69697e-08, -4.17233e-07, -1, 9, 4.03067, 9.99999 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Furniture/Chair"]
-transform = Transform( 1, 4.79751e-16, 0, 4.79743e-16, 1, 0, 0, 0, 1, 0.2, 0.5, 0 )
-shape = SubResource( 3 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Furniture/Chair"]
-transform = Transform( 1, 4.79751e-16, 0, 4.79743e-16, 1, 0, 0, 0, 1, 0, 0, 0 )
-mesh = ExtResource( 4 )
 material/0 = null
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]

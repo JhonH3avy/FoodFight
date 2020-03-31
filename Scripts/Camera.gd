@@ -6,8 +6,11 @@ export(NodePath) var PlayerPath
 
 var Player : KinematicBody
 
+var obstacles = []
+
 func _ready():
 	Player = get_node(PlayerPath)
+
 
 func _enter_tree():
 	lock_mouse()
@@ -43,3 +46,18 @@ func look_up_down(rot):
 	var new_rotation = get_rotation() + Vector3(rot, 0, 0)
 	new_rotation.x = clamp(new_rotation.x, PI / -4, PI / 8)
 	return new_rotation
+
+
+func _on_Area_body_entered(body):
+	if body is StaticBody:
+		obstacles.append(body)
+		body.visible = false
+
+
+func _on_Area_body_exited(body):
+	if body is StaticBody:
+		if obstacles.has(body):
+			var pos = obstacles.find(body)
+			obstacles.remove(pos)
+		body.visible = true
+	

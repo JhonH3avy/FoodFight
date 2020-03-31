@@ -1,4 +1,4 @@
-extends KinematicBody
+extends "res://Scripts/Character.gd"
 
 
 # movement variables
@@ -16,7 +16,7 @@ const JUMP_SPEED = 15
 # animation constants
 const BLEND_MINIMUM = 0.125
 const RUN_BLEND_AMOUNT = 0.1
-const IDLE_BLEND_AMOUNT = 0.075
+const IDLE_BLEND_AMOUNT = 0.025
 
 # animation variables
 var move_state = 0
@@ -108,4 +108,16 @@ func animate():
 		move_state -= IDLE_BLEND_AMOUNT
 	move_state = clamp(move_state, 0, 1)
 	animationTree["parameters/Motion/blend_amount"] = move_state
+
+
+func _input(_event):
+	if Input.is_action_just_pressed("fire"):
+		try_to_fire()
+
+
+func try_to_fire():	
+	if can_fire:
+		fire()
+		can_fire = false
+		$CanFire.start()
 

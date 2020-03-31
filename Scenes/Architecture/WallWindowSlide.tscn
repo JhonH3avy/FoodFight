@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Architecture/WallWindow.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Models/Architecture/wallWindowSlide.mesh" type="ArrayMesh" id=2]
+
+[node name="WallWindowSlide" instance=ExtResource( 1 )]
+
+[node name="MeshInstance" parent="." index="1"]
+mesh = ExtResource( 2 )
+material/5 = null
+material/6 = null
