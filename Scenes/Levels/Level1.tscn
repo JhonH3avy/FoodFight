@@ -278,11 +278,9 @@ transform = Transform( -2.18557e-08, 0, 0.5, 0, 0.5, 0, -0.5, 0, -2.18557e-08, 9
 transform = Transform( -2.18557e-08, 0, 0.5, 0, 0.5, 0, -0.5, 0, -2.18557e-08, 9.25, 0.25, 43.25 )
 
 [node name="Spawner" parent="." index="5" instance=ExtResource( 5 )]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 8, 0.5, 44.5 )
-initial_patrol_position_nodepath = NodePath("InitialPatrolPosition")
-
-[node name="InitialPatrolPosition" type="Position3D" parent="Spawner" index="4"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 24.5 )
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 8, 0.5, 44.5 )
+initial_patrol_position_nodepath = NodePath("../PatrolPoints/InitialPatrolPosition")
+patrol_points_nodepath = [ NodePath("../PatrolPoints/Position3D"), NodePath("../PatrolPoints/Position3D2"), NodePath("../PatrolPoints/Position3D3"), NodePath("../PatrolPoints/Position3D4"), NodePath("../PatrolPoints/Position3D5"), NodePath("../PatrolPoints/Position3D6"), NodePath("../PatrolPoints/Position3D7") ]
 
 [node name="PatrolPoints" type="Node" parent="." index="6"]
 
@@ -306,3 +304,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 21, 14 )
 
 [node name="Position3D7" type="Position3D" parent="PatrolPoints" index="6"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 21, 14 )
+
+[node name="InitialPatrolPosition" type="Position3D" parent="PatrolPoints" index="7"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16.5, 0.5, 44.5 )

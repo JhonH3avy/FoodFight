@@ -4,7 +4,10 @@ extends RigidBody
 signal on_bystander_about_to_dissapear
 signal on_patrol_ended
 
-export var patrol_duration = 2.5
+const MINIMAL_DISTANCE_TO_TARGET = 0.125
+const speed = 5
+
+var target : Vector3
 
 
 func hitted():
@@ -17,8 +20,13 @@ func _on_Timer_timeout():
 
 
 func patrol_to(point):
-	$Tween.interpolate_property(self, "position", translation, point, patrol_duration, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	target = point
+	var dir = (target- translation).normalized()
+	set_linear_velocity(dir * speed)
 
 
-func _on_Tween_tween_completed(_object, _key):
-	emit_signal("on_patrol_ended", self)
+func _physics_process(_delta):
+	if (target- translation).length() < MINIMAL_DISTANCE_TO_TARGET:
+		set_linear_velocity(Vector3.ZERO)
+		emit_signal("on_patrol_ended", self)
+

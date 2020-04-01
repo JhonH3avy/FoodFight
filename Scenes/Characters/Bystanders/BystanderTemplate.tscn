@@ -1,12 +1,18 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Models/Bystanders/Female_Running.mesh" type="ArrayMesh" id=1]
 [ext_resource path="res://Scripts/Bystander.gd" type="Script" id=2]
+
+[sub_resource type="PhysicsMaterial" id=2]
+friction = 0.0
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.44
 
 [node name="BystanderTemplate" type="RigidBody"]
+collision_layer = 128
+collision_mask = 255
+physics_material_override = SubResource( 2 )
 script = ExtResource( 2 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
@@ -28,4 +34,3 @@ wait_time = 2.0
 
 [node name="Tween" type="Tween" parent="."]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
-[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]

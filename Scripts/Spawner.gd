@@ -12,6 +12,7 @@ export(Array, NodePath) var patrol_points_nodepath
 var patrol_points = []
 
 var bystanders_count = 0
+var bystanders_variations
 
 
 func _enter_tree():
@@ -26,6 +27,7 @@ func _ready():
 		$MeshInstance.visible = true
 	else:
 		$MeshInstance.visible = false
+	bystanders_variations = FileWrapper.get_files(BYSTANDERS_VARIATIONS_FOLDER_PATH)
 
 
 func _on_Timer_timeout():
@@ -33,10 +35,12 @@ func _on_Timer_timeout():
 
 
 func create_bystander():
-	if bystanders_count <= BYSTANDERS_MAX_COUNT:
-		var bystanders_variations = FileWrapper.get_files(BYSTANDERS_VARIATIONS_FOLDER_PATH)
+	if bystanders_count < BYSTANDERS_MAX_COUNT:
 		var bystander_model = bystanders_variations[randi() % bystanders_variations.size()]
 		var bystander_node = load(bystander_model).instance()
+		add_child(bystander_node)
+		bystander_node.set_as_toplevel(true)
+		bystander_node.global_transform = $Forward.global_transform
 		bystander_node.connect("on_bystander_about_to_dissapear", self, "bystander_disspeared")
 		bystander_node.connect("on_patrol_ended", self, "reassgin_patrol_point_to_bystander")
 		bystanders_count += 1

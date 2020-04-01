@@ -13,9 +13,10 @@ mesh = SubResource( 1 )
 material/0 = null
 
 [node name="Forward" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, -1.5, -1.5 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5 )
 
 [node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
 autostart = true
 
 [node name="Tween" type="Tween" parent="."]
